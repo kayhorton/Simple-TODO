@@ -1,0 +1,122 @@
+<!DOCTYPE=html>
+<html ng-app="myapp">
+  <head>
+    <title>CRUD in Angularjs</title>
+    <script type="test/javascript" src="js/angular.min.js"></script>
+  </head>
+
+  <body ng-controller ="productController">
+    <table cellpadding="2" cellspacing="2" border="1">
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Quality</th>
+        <th>Options</th>
+      </tr>
+      <tr ng-repeat="product in listProducts">
+        <td>{{product.id}}</td>
+        <td>{{product.name}}</td>
+        <td>{{product.price}}</td>
+        <td>{{product.quality}}</td>
+        <td>
+          <a href="#" ng-click="del(product.id)">Delete</a>
+          <a href="#" ng-click="selectEdit(product.id)">Edit</a>
+        </td>
+      </tr>
+    </table>
+    <h3>Product Information</h3>
+    <table cellpadding="2" cellspacing="2">
+      <tr>
+        <td>Id</td>
+        <td><input type="text" ng-model="id"></td>
+      </tr>
+      <tr>
+        <td>Name</td>
+        <td><input type="text" ng-model="name"></td>
+      </tr>
+      <tr>
+        <td>Price</td>
+        <td><input type="text" ng-model="price"></td>
+      </tr>
+      <tr>
+        <td>Quantity</td>
+        <td><input type="text" ng-model="quantity"></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>
+          <input type="button" value='Add' ng-click="add()">
+          <input type="button" value='Save' ng-click="edit()">
+        </td>
+      </tr>
+    </table>
+
+
+
+
+    <script type="test/javascript">
+      var myapp=angular.module('myapp',[]);
+      myapp.controller('productController', function($scope){
+
+        $scope.listProducts = [
+          {id:'p01', name:'Product1', price:1000, quantity:20},
+          {id:'p02', name:'Product2', price:2000, quantity:21},
+          {id:'p03', name:'Product3', price:3000, quantity:22},
+          {id:'p03', name:'Product4', price:4000, quantity:23}
+        ];
+
+        $scope.add = function() {
+          $scope.listProducts.push({
+            id:$scope.id,
+            name:$scope.name,
+            price:$scope.price,
+            quantity:$scope.quantity
+          });
+
+          $scope.id='';
+          $scope.name='';
+          $scope.price='';
+          $scope.quantity='';
+        };
+
+        $scope.edit = function() {
+          var index = getSelectedIndex($scope.id);
+          $scope.listProducts[index].name = $scope.name;
+          $scope.listProducts[index].price = $scope.price;
+          $scope.listProducts[index].quality = $scope.quality;
+
+        };
+
+
+        $scope.selectEdit = function(id){
+          var index = getSelectedIndex($scope.id);
+          var product = $scope.listPorducts[index];
+          $scope.id = product.id;
+          $scope.name = product.name;
+          $scope.price = product.price;
+          $scope.quantity = product.quantity;
+
+        }
+
+        $scope.del = function(id) {
+          var result = confirm('Are you sure?');
+          if (result === true) {
+            var index = getSelectedIndex(id);
+            alert(index);
+            $scope.listPorducts.splice(index,1);
+          }
+        };
+
+        function getSelectedIndex(id) {
+          for (var i=0; i<$scope.listPorducts.length; i++)
+            if ($scope.listPorducts[i].id == id)
+              return i;
+            return -1;
+        };
+
+      });
+
+
+    </script>
+  </body>
